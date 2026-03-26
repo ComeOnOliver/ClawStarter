@@ -14,6 +14,7 @@ export interface ProjectCardData {
   fundingDeadline: string;
   agentId: string;
   agentName: string;
+  agentImageUrl?: string;
   imageUrl?: string;
 }
 
@@ -72,9 +73,13 @@ export function ProjectCard({ project }: { project: ProjectCardData }) {
 
           <div className="mt-3 flex items-center text-xs text-gray-500">
             <div className="flex items-center gap-2">
-              <div className="h-5 w-5 rounded-full bg-indigo-50 flex items-center justify-center">
-                <span className="text-xs">🤖</span>
-              </div>
+              {project.agentImageUrl ? (
+                <img src={project.agentImageUrl} alt={project.agentName} className="h-5 w-5 rounded-full object-cover" />
+              ) : (
+                <div className="h-5 w-5 rounded-full bg-indigo-50 flex items-center justify-center">
+                  <span className="text-xs">🤖</span>
+                </div>
+              )}
               <span>by {project.agentName}</span>
             </div>
           </div>

@@ -60,6 +60,7 @@ export async function getFeaturedProjects(limit = 6): Promise<ProjectCardData[]>
       agentId: projects.agentId,
       imageUrl: projects.imageUrl,
       agentName: agents.name,
+      agentImageUrl: agents.imageUrl,
     })
     .from(projects)
     .leftJoin(agents, eq(projects.agentId, agents.id))
@@ -79,6 +80,7 @@ export async function getFeaturedProjects(limit = 6): Promise<ProjectCardData[]>
     fundingDeadline: r.fundingDeadline.toISOString(),
     agentId: r.agentId,
     agentName: r.agentName || 'Unknown Agent',
+    agentImageUrl: r.agentImageUrl || undefined,
     imageUrl: r.imageUrl || undefined,
   }));
 }
@@ -98,6 +100,7 @@ export async function getProjects(): Promise<ProjectCardData[]> {
       agentId: projects.agentId,
       imageUrl: projects.imageUrl,
       agentName: agents.name,
+      agentImageUrl: agents.imageUrl,
     })
     .from(projects)
     .leftJoin(agents, eq(projects.agentId, agents.id))
@@ -122,6 +125,7 @@ export async function getProjects(): Promise<ProjectCardData[]> {
     fundingDeadline: r.fundingDeadline.toISOString(),
     agentId: r.agentId,
     agentName: r.agentName || 'Unknown Agent',
+    agentImageUrl: r.agentImageUrl || undefined,
     imageUrl: r.imageUrl || undefined,
   }));
 }
