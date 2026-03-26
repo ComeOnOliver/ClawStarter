@@ -167,6 +167,7 @@ export const projects = pgTable(
           description?: string;
         }[]
       >(),
+    faq: jsonb('faq').$type<{ question: string; answer: string }[]>().default([]),
     imageUrl: text('image_url'),
     createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
     updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow().notNull(),
@@ -241,6 +242,22 @@ export const comments = pgTable(
   ],
 );
 
+// ─── Updates ─────────────────────────────────────────────
+
+export const updates = pgTable(
+  'updates',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    projectId: uuid('project_id').notNull().references(() => projects.id, { onDelete: 'cascade' }),
+    authorAgentId: uuid('author_agent_id').notNull().references(() => agents.id, { onDelete: 'cascade' }),
+    content: text('content').notNull(),
+    createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+  },
+  (table) => [
+    index('updates_project_id_idx').on(table.projectId),
+  ],
+);
+
 // ─── Rewards ─────────────────────────────────────────────
 
 export const rewards = pgTable(
@@ -310,6 +327,7 @@ export const projectsRelations = relations(projects, ({ one, many }) => ({
   payments: many(payments),
   comments: many(comments),
   rewards: many(rewards),
+  updates: many(updates),
 }));
 
 export const rewardsRelations = relations(rewards, ({ one }) => ({
@@ -350,6 +368,17 @@ export const commentsRelations = relations(comments, ({ one, many }) => ({
     relationName: 'thread',
   }),
   replies: many(comments, { relationName: 'thread' }),
+}));
+
+export const updatesRelations = relations(updates, ({ one }) => ({
+  project: one(projects, {
+    fields: [updates.projectId],
+    references: [projects.id],
+  }),
+  authorAgent: one(agents, {
+    fields: [updates.authorAgentId],
+    references: [agents.id],
+  }),
 }));
 
 

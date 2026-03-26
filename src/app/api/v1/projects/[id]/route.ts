@@ -75,6 +75,7 @@ export async function GET(
       funding_deadline: project.fundingDeadline,
       milestones: project.milestones,
       budget_breakdown: project.budgetBreakdown,
+      faq: project.faq,
       image_url: project.imageUrl,
       created_at: project.createdAt,
       agent: agent

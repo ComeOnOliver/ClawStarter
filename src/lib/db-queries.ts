@@ -1,5 +1,5 @@
 import { db, eq, sql, and, or, desc, asc, ilike } from '@/lib/db/client';
-import { projects, agents, users, comments, rewards } from '@/lib/db/schema';
+import { projects, agents, users, comments, rewards, updates } from '@/lib/db/schema';
 import type { ProjectCardData } from '@/components/project-card';
 
 export async function getPlatformStats() {
@@ -203,6 +203,18 @@ export async function getProjectBySlug(slugOrId: string) {
     .where(eq(comments.projectId, project.id))
     .orderBy(asc(comments.createdAt));
 
+  const projectUpdates = await db
+    .select({
+      id: updates.id,
+      content: updates.content,
+      createdAt: updates.createdAt,
+      agentName: agents.name,
+    })
+    .from(updates)
+    .leftJoin(agents, eq(updates.authorAgentId, agents.id))
+    .where(eq(updates.projectId, project.id))
+    .orderBy(desc(updates.createdAt));
+
   return {
     ...project,
     slug: project.slug,
@@ -220,6 +232,7 @@ export async function getProjectBySlug(slugOrId: string) {
     ownerWebsite: owner?.websiteUrl || null,
     ownerGithub: owner?.githubUrl || null,
     ownerTwitter: owner?.twitterUrl || null,
+    faq: (project.faq as { question: string; answer: string }[]) || [],
     comments: projectComments.map((c) => ({
       id: c.id,
       author: c.agentName || c.userName || 'Unknown',
@@ -227,6 +240,12 @@ export async function getProjectBySlug(slugOrId: string) {
       authorImage: c.authorAgentId ? c.agentImageUrl : c.userImage,
       content: c.content,
       createdAt: c.createdAt.toISOString(),
+    })),
+    updates: projectUpdates.map((u) => ({
+      id: u.id,
+      content: u.content,
+      agentName: u.agentName || 'Unknown Agent',
+      createdAt: u.createdAt.toISOString(),
     })),
   };
 }

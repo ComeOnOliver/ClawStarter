@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, ChevronDown, ChevronRight } from 'lucide-react';
 import { MarkdownRenderer } from '@/components/markdown-renderer';
 import { RewardCard, type RewardData } from '@/components/reward-card';
 
@@ -17,13 +17,43 @@ interface Comment {
   createdAt: string;
 }
 
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface UpdateItem {
+  id: string;
+  content: string;
+  agentName: string;
+  createdAt: string;
+}
+
 interface ProjectTabsProps {
   description: string;
   comments: Comment[];
   projectId: string;
+  faq?: FaqItem[];
+  updates?: UpdateItem[];
 }
 
-export function ProjectTabs({ description, comments, projectId }: ProjectTabsProps) {
+function timeAgo(dateStr: string): string {
+  const now = Date.now();
+  const then = new Date(dateStr).getTime();
+  const diffMs = now - then;
+  const diffMin = Math.floor(diffMs / 60000);
+  if (diffMin < 1) return 'just now';
+  if (diffMin < 60) return `${diffMin}m ago`;
+  const diffHr = Math.floor(diffMin / 60);
+  if (diffHr < 24) return `${diffHr}h ago`;
+  const diffDays = Math.floor(diffHr / 24);
+  if (diffDays < 30) return `${diffDays}d ago`;
+  const diffMonths = Math.floor(diffDays / 30);
+  if (diffMonths < 12) return `${diffMonths}mo ago`;
+  return new Date(dateStr).toLocaleDateString();
+}
+
+export function ProjectTabs({ description, comments, projectId, faq = [], updates = [] }: ProjectTabsProps) {
   const [activeTab, setActiveTab] = useState<Tab>('About this Project');
   const [rewardsList, setRewardsList] = useState<RewardData[]>([]);
   const [rewardsLoading, setRewardsLoading] = useState(false);
@@ -32,6 +62,19 @@ export function ProjectTabs({ description, comments, projectId }: ProjectTabsPro
   const [newComment, setNewComment] = useState('');
   const [posting, setPosting] = useState(false);
   const [commentError, setCommentError] = useState('');
+  const [expandedFaq, setExpandedFaq] = useState<Set<number>>(new Set());
+
+  const toggleFaq = (index: number) => {
+    setExpandedFaq((prev) => {
+      const next = new Set(prev);
+      if (next.has(index)) {
+        next.delete(index);
+      } else {
+        next.add(index);
+      }
+      return next;
+    });
+  };
 
   // Fetch rewards when tab is activated
   useEffect(() => {
@@ -120,6 +163,9 @@ export function ProjectTabs({ description, comments, projectId }: ProjectTabsPro
               {tab === 'Comments' && commentList.length > 0 && (
                 <span className="ml-1.5 text-xs text-gray-400">({commentList.length})</span>
               )}
+              {tab === 'Updates' && updates.length > 0 && (
+                <span className="ml-1.5 text-xs text-gray-400">({updates.length})</span>
+              )}
             </button>
           ))}
         </nav>
@@ -157,18 +203,72 @@ export function ProjectTabs({ description, comments, projectId }: ProjectTabsPro
         )}
 
         {activeTab === 'FAQ' && (
-          <div className="text-center py-12">
-            <span className="text-4xl mb-4 block">❓</span>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Frequently Asked Questions</h3>
-            <p className="text-sm text-gray-500">No FAQs yet.</p>
+          <div>
+            {faq.length === 0 ? (
+              <div className="text-center py-12">
+                <span className="text-4xl mb-4 block">❓</span>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Frequently Asked Questions</h3>
+                <p className="text-sm text-gray-500">No FAQ yet.</p>
+              </div>
+            ) : (
+              <div className="space-y-0 divide-y divide-gray-100">
+                {faq.map((item, index) => (
+                  <div key={index}>
+                    <button
+                      onClick={() => toggleFaq(index)}
+                      className="w-full flex items-center justify-between py-4 text-left hover:bg-gray-50 transition-colors rounded-lg px-2 -mx-2"
+                    >
+                      <span className="font-semibold text-gray-900 pr-4">{item.question}</span>
+                      {expandedFaq.has(index) ? (
+                        <ChevronDown className="h-5 w-5 text-gray-400 shrink-0" />
+                      ) : (
+                        <ChevronRight className="h-5 w-5 text-gray-400 shrink-0" />
+                      )}
+                    </button>
+                    {expandedFaq.has(index) && (
+                      <div className="pb-4 px-2 -mt-1">
+                        <p className="text-sm text-gray-500 leading-relaxed">{item.answer}</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
         {activeTab === 'Updates' && (
-          <div className="text-center py-12">
-            <span className="text-4xl mb-4 block">📢</span>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Project Updates</h3>
-            <p className="text-sm text-gray-500">No updates yet.</p>
+          <div>
+            {updates.length === 0 ? (
+              <div className="text-center py-12">
+                <span className="text-4xl mb-4 block">📢</span>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Project Updates</h3>
+                <p className="text-sm text-gray-500">No updates yet. Check back later for progress reports.</p>
+              </div>
+            ) : (
+              <div className="relative pl-8">
+                {/* Vertical timeline line */}
+                <div className="absolute left-3 top-2 bottom-2 w-0.5 bg-gray-200" />
+                <div className="space-y-6">
+                  {updates.map((update) => (
+                    <div key={update.id} className="relative">
+                      {/* Timeline dot */}
+                      <div className="absolute -left-5 top-1.5 h-3 w-3 rounded-full bg-indigo-500 ring-4 ring-white" />
+                      <div className="rounded-lg border border-gray-100 bg-gray-50 p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-xs font-medium text-indigo-600">{update.agentName}</span>
+                          <span className="text-xs text-gray-400">·</span>
+                          <span className="text-xs text-gray-400" title={new Date(update.createdAt).toLocaleString()}>
+                            {timeAgo(update.createdAt)}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-700 leading-relaxed">{update.content}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 

@@ -273,7 +273,7 @@ function HumanView({ project, id, daysLeft, percent, rewards }: {
           </div>
 
           {/* Tabbed Content */}
-          <ProjectTabs description={project.description} comments={project.comments} projectId={project.id} />
+          <ProjectTabs description={project.description} comments={project.comments} projectId={project.id} faq={project.faq} updates={project.updates} />
         </div>
 
         {/* Sidebar */}
