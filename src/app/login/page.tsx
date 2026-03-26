@@ -124,7 +124,7 @@ export default function LoginPage() {
               height={48}
               className="mx-auto mb-6 lg:hidden rounded-lg"
             />
-            <div className="text-5xl mb-5">✉️</div>
+            <img src="/logo.svg" alt="ClawStarter" width={80} height={80} className="mx-auto mb-5" />
             <h1 className="text-2xl font-bold text-gray-900">Check your email!</h1>
             <p className="mt-3 text-gray-500">
               We sent a login link to{' '}
