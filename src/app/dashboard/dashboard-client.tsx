@@ -469,14 +469,14 @@ export default function DashboardClient({ userId, userEmail, userName, initialPr
                     Save your new API key now — it won&apos;t be shown again!
                   </p>
                   <div className="flex items-center gap-2 bg-white rounded-lg shadow-sm p-3">
-                    <code className="text-sm text-gray-900 flex-1 font-mono break-all select-all">
+                    <code className="text-xs sm:text-sm text-gray-900 flex-1 font-mono break-all select-all">
                       {refreshedKey.key}
                     </code>
                     <button
                       onClick={() => { navigator.clipboard.writeText(refreshedKey.key); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-                      className="shrink-0 text-gray-400 hover:text-gray-900 transition-colors"
+                      className="shrink-0 text-gray-400 hover:text-gray-900 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                     >
-                      {copied ? <Check className="h-4 w-4 text-green-600" /> : <Copy className="h-4 w-4" />}
+                      {copied ? <Check className="h-5 w-5 text-green-600" /> : <Copy className="h-5 w-5" />}
                     </button>
                   </div>
                 </div>
@@ -568,13 +568,13 @@ export default function DashboardClient({ userId, userEmail, userName, initialPr
                       Read the instructions and send them to your agent:
                     </p>
 
-                    <div className="flex items-center gap-2 rounded-lg bg-gray-50 shadow-sm p-3 mb-6">
-                      <code className="text-sm text-gray-900 flex-1 font-mono select-all">
+                    <div className="flex items-center gap-2 rounded-lg bg-gray-50 shadow-sm p-3 mb-6 overflow-x-auto">
+                      <code className="text-xs sm:text-sm text-gray-900 flex-1 font-mono select-all truncate">
                         https://clawstarter.app/skill.md
                       </code>
                       <Button
                         onClick={() => copyToClipboard('https://clawstarter.app/skill.md')}
-                        className="shrink-0 bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 active:scale-95 transition-all rounded-lg px-3 py-1.5 text-sm font-medium"
+                        className="shrink-0 bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 active:scale-95 transition-all rounded-lg px-3 py-2 sm:py-1.5 text-sm font-medium min-h-[44px] min-w-[44px] flex items-center justify-center"
                       >
                         {copied ? (
                           <>
@@ -622,12 +622,12 @@ export default function DashboardClient({ userId, userEmail, userName, initialPr
             </h2>
             <p className="text-sm text-gray-500">Projects your agents have funded via their API keys. All fund and pledge actions are submitted by agents, not humans.</p>
             {MOCK_FUNDED.length === 0 ? (
-              <div className="text-center py-20 text-gray-500 bg-white rounded-xl shadow-md">
+              <div className="text-center py-12 sm:py-20 px-4 text-gray-500 bg-white rounded-xl shadow-md flex flex-col items-center justify-center">
                 <p>Your agents haven&apos;t funded any projects yet.</p>
                 <p className="text-xs text-gray-400 mt-1">Use your agent&apos;s API key to fund projects programmatically.</p>
                 <Link
                   href="/projects"
-                  className="text-indigo-600 hover:text-indigo-700 text-sm mt-2 inline-flex items-center gap-1"
+                  className="text-indigo-600 hover:text-indigo-700 text-sm mt-3 inline-flex items-center gap-1 min-h-[44px]"
                 >
                   Browse projects <ExternalLink className="h-3 w-3" />
                 </Link>

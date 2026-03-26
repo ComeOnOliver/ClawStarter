@@ -30,39 +30,39 @@ export function Footer() {
           {/* Platform */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Platform</h3>
-            <ul className="mt-4 space-y-3">
-              <li><Link href="/projects" className="text-sm text-gray-500 hover:text-gray-900">Browse Projects</Link></li>
-              <li><Link href="/dashboard" className="text-sm text-gray-500 hover:text-gray-900">Launch a Project</Link></li>
-              <li><a href="#how-it-works" className="text-sm text-gray-500 hover:text-gray-900">How It Works</a></li>
-              <li><a href="#categories" className="text-sm text-gray-500 hover:text-gray-900">Categories</a></li>
+            <ul className="mt-4 space-y-1">
+              <li><Link href="/projects" className="inline-block text-sm text-gray-500 hover:text-gray-900 py-1.5 min-h-[44px] leading-[44px] sm:min-h-0 sm:leading-normal sm:py-0">Browse Projects</Link></li>
+              <li><Link href="/dashboard" className="inline-block text-sm text-gray-500 hover:text-gray-900 py-1.5 min-h-[44px] leading-[44px] sm:min-h-0 sm:leading-normal sm:py-0">Launch a Project</Link></li>
+              <li><a href="#how-it-works" className="inline-block text-sm text-gray-500 hover:text-gray-900 py-1.5 min-h-[44px] leading-[44px] sm:min-h-0 sm:leading-normal sm:py-0">How It Works</a></li>
+              <li><a href="#categories" className="inline-block text-sm text-gray-500 hover:text-gray-900 py-1.5 min-h-[44px] leading-[44px] sm:min-h-0 sm:leading-normal sm:py-0">Categories</a></li>
             </ul>
           </div>
 
           {/* Resources */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Resources</h3>
-            <ul className="mt-4 space-y-3">
-              <li><a href="#api" className="text-sm text-gray-500 hover:text-gray-900">API Docs</a></li>
-              <li><a href="#" className="text-sm text-gray-500 hover:text-gray-900">Blog</a></li>
-              <li><a href="#" className="text-sm text-gray-500 hover:text-gray-900">Community</a></li>
-              <li><a href="#" className="text-sm text-gray-500 hover:text-gray-900">Support</a></li>
+            <ul className="mt-4 space-y-1">
+              <li><a href="#api" className="inline-block text-sm text-gray-500 hover:text-gray-900 py-1.5 min-h-[44px] leading-[44px] sm:min-h-0 sm:leading-normal sm:py-0">API Docs</a></li>
+              <li><a href="#" className="inline-block text-sm text-gray-500 hover:text-gray-900 py-1.5 min-h-[44px] leading-[44px] sm:min-h-0 sm:leading-normal sm:py-0">Blog</a></li>
+              <li><a href="#" className="inline-block text-sm text-gray-500 hover:text-gray-900 py-1.5 min-h-[44px] leading-[44px] sm:min-h-0 sm:leading-normal sm:py-0">Community</a></li>
+              <li><a href="#" className="inline-block text-sm text-gray-500 hover:text-gray-900 py-1.5 min-h-[44px] leading-[44px] sm:min-h-0 sm:leading-normal sm:py-0">Support</a></li>
             </ul>
           </div>
 
           {/* Legal */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">Legal</h3>
-            <ul className="mt-4 space-y-3">
-              <li><a href="#" className="text-sm text-gray-500 hover:text-gray-900">Privacy Policy</a></li>
-              <li><a href="#" className="text-sm text-gray-500 hover:text-gray-900">Terms of Service</a></li>
-              <li><a href="#" className="text-sm text-gray-500 hover:text-gray-900">Cookie Policy</a></li>
+            <ul className="mt-4 space-y-1">
+              <li><a href="#" className="inline-block text-sm text-gray-500 hover:text-gray-900 py-1.5 min-h-[44px] leading-[44px] sm:min-h-0 sm:leading-normal sm:py-0">Privacy Policy</a></li>
+              <li><a href="#" className="inline-block text-sm text-gray-500 hover:text-gray-900 py-1.5 min-h-[44px] leading-[44px] sm:min-h-0 sm:leading-normal sm:py-0">Terms of Service</a></li>
+              <li><a href="#" className="inline-block text-sm text-gray-500 hover:text-gray-900 py-1.5 min-h-[44px] leading-[44px] sm:min-h-0 sm:leading-normal sm:py-0">Cookie Policy</a></li>
             </ul>
           </div>
         </div>
 
         <div className="h-px bg-gray-200 mt-12" />
-        <div className="pt-8 text-center">
-          <p className="text-sm text-gray-400">
+        <div className="pt-8 pb-[env(safe-area-inset-bottom,0px)] text-center">
+          <p className="text-sm text-gray-400 pb-2">
             © {new Date().getFullYear()} ClawStarter. All rights reserved.
           </p>
         </div>
