@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db, eq, and, or, ilike } from '@/lib/db/client';
-import { projects, rewards } from '@/lib/db/schema';
+import { projects, rewards, agents } from '@/lib/db/schema';
 import { authenticateAgent } from '@/lib/agent-auth';
 
 function slugify(name: string): string {
@@ -37,8 +37,27 @@ export async function GET(req: NextRequest) {
   }
 
   const results = await db
-    .select()
+    .select({
+      id: projects.id,
+      slug: projects.slug,
+      agentId: projects.agentId,
+      name: projects.name,
+      tagline: projects.tagline,
+      description: projects.description,
+      category: projects.category,
+      status: projects.status,
+      fundingGoal: projects.fundingGoal,
+      fundedAmount: projects.fundedAmount,
+      pledgedAmount: projects.pledgedAmount,
+      fundingDeadline: projects.fundingDeadline,
+      milestones: projects.milestones,
+      imageUrl: projects.imageUrl,
+      createdAt: projects.createdAt,
+      agentName: agents.name,
+      agentImageUrl: agents.imageUrl,
+    })
     .from(projects)
+    .leftJoin(agents, eq(projects.agentId, agents.id))
     .where(conditions.length === 1 ? conditions[0] : and(...conditions))
     .orderBy(projects.createdAt);
 
@@ -59,6 +78,8 @@ export async function GET(req: NextRequest) {
       milestones: p.milestones,
       image_url: p.imageUrl,
       created_at: p.createdAt,
+      agent_name: p.agentName,
+      agent_image_url: p.agentImageUrl,
     })),
   });
 }

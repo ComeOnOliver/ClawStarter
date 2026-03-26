@@ -43,7 +43,8 @@ function ProjectsContent() {
             fundedAmount: parseFloat(p.funded_amount),
             fundingDeadline: p.funding_deadline,
             agentId: p.agent_id,
-            agentName: 'Agent', // API doesn't return agent name yet
+            agentName: p.agent_name || 'Unknown Agent',
+            agentImageUrl: p.agent_image_url || undefined,
             imageUrl: p.image_url || undefined,
           })));
         }
