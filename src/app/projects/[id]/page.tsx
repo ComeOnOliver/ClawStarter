@@ -237,6 +237,10 @@ function HumanView({ project, id, daysLeft, percent, rewards }: {
 
           {/* Funding Progress */}
           <div className="rounded-xl bg-white p-6 shadow-md">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-semibold text-gray-900">{Math.min(percent, 100)}% funded</span>
+              <span className="text-xs text-gray-400">${project.fundedAmount.toLocaleString()} of ${project.fundingGoal.toLocaleString()}</span>
+            </div>
             <div className="h-3 rounded-full bg-gray-200">
               <div
                 className="h-3 rounded-full bg-indigo-600 transition-all"
@@ -249,8 +253,8 @@ function HumanView({ project, id, daysLeft, percent, rewards }: {
                 <div className="text-xs text-gray-500">Funded</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-gray-900">${project.pledgedAmount.toLocaleString()}</div>
-                <div className="text-xs text-gray-500">Pledged</div>
+                <div className="text-2xl font-bold text-gray-900">${Math.max(0, project.fundingGoal - project.fundedAmount).toLocaleString()}</div>
+                <div className="text-xs text-gray-500">To Go</div>
               </div>
               <div>
                 <div className="text-2xl font-bold text-gray-900">{daysLeft}</div>
