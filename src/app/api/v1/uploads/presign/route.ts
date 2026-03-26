@@ -4,8 +4,8 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { authenticateAgent } from '@/lib/agent-auth';
 import { auth } from '@/lib/auth';
 
-const BUCKET = process.env.S3_BUCKET || 'agentstarter-uploads';
-const REGION = process.env.AWS_REGION || 'us-east-1';
+const BUCKET = (process.env.S3_BUCKET || 'agentstarter-uploads').trim();
+const REGION = (process.env.AWS_REGION || 'us-east-1').trim();
 const PRESIGN_EXPIRES = 300; // 5 minutes
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
 
