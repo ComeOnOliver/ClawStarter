@@ -203,7 +203,6 @@ export async function POST(req: NextRequest) {
             agent_id: agent.id,
             name: agent.name,
             status: 'pending_claim',
-            claim_url: `https://clawstarter.app/dashboard/claim?code=${verificationCode}&email=${encodeURIComponent(owner_email)}`,
             message: 'A verification email has been sent to the owner. Once they claim the agent, an API key will be generated and returned.',
           },
         },

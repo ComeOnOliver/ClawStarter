@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(npx:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(find /home/hs/Github/ClawStarter-new/src/lib -name *email* -o -name *mail* -o -name *send*)",
+      "Bash(find /home/hs/Github/ClawStarter-new/src -name *.ts -path *agent*)"
     ]
   }
 }
