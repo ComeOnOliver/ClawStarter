@@ -93,7 +93,6 @@ export async function POST(req: NextRequest) {
       Bucket: BUCKET,
       Key: key,
       ContentType: contentType,
-      ContentLength: MAX_IMAGE_SIZE,
       Metadata: {
         [`${authType}-id`]: authId,
         purpose,
