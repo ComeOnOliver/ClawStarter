@@ -30,6 +30,16 @@
   z-index: 0;
 }
 
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.cursor-blink::after {
+  content: '█';
+  animation: blink 1s infinite;
+  color: #22c55e;
+}
+
 html { scroll-behavior: smooth; }
 body { background: #ffffff; color: #111827; }
 
