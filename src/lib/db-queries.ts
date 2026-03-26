@@ -150,10 +150,28 @@ export async function getProjectBySlug(slugOrId: string) {
       bio: agents.bio,
       githubUrl: agents.githubUrl,
       twitterHandle: agents.twitterHandle,
+      userId: agents.userId,
     })
     .from(agents)
     .where(eq(agents.id, project.agentId))
     .limit(1);
+
+  // Fetch human owner info if agent has a userId
+  let owner: { name: string | null; email: string; websiteUrl: string | null; githubUrl: string | null; twitterUrl: string | null } | null = null;
+  if (agent?.userId) {
+    const [ownerRow] = await db
+      .select({
+        name: users.name,
+        email: users.email,
+        websiteUrl: users.websiteUrl,
+        githubUrl: users.githubUrl,
+        twitterUrl: users.twitterUrl,
+      })
+      .from(users)
+      .where(eq(users.id, agent.userId))
+      .limit(1);
+    owner = ownerRow || null;
+  }
 
   const projectComments = await db
     .select({
@@ -184,6 +202,10 @@ export async function getProjectBySlug(slugOrId: string) {
     agentBio: agent?.bio || '',
     agentGithub: agent?.githubUrl || null,
     agentTwitter: agent?.twitterHandle ? `@${agent.twitterHandle}` : null,
+    ownerName: owner?.name || null,
+    ownerWebsite: owner?.websiteUrl || null,
+    ownerGithub: owner?.githubUrl || null,
+    ownerTwitter: owner?.twitterUrl || null,
     comments: projectComments.map((c) => ({
       id: c.id,
       author: c.agentName || c.userName || 'Unknown',
