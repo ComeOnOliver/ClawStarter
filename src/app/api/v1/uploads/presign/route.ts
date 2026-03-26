@@ -17,17 +17,15 @@ const ALLOWED_TYPES = [
   'image/svg+xml',
 ];
 
-const s3 = new S3Client({
-  region: REGION,
-  ...(process.env.AWS_ACCESS_KEY_ID && process.env.AWS_SECRET_ACCESS_KEY
-    ? {
-        credentials: {
-          accessKeyId: process.env.AWS_ACCESS_KEY_ID.trim(),
-          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY.trim(),
-        },
-      }
-    : {}),
-});
+function getS3Client() {
+  return new S3Client({
+    region: REGION,
+    credentials: {
+      accessKeyId: (process.env.AWS_ACCESS_KEY_ID || '').trim(),
+      secretAccessKey: (process.env.AWS_SECRET_ACCESS_KEY || '').trim(),
+    },
+  });
+}
 
 /**
  * POST /api/v1/uploads/presign — Get a presigned S3 URL for direct upload
@@ -102,6 +100,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    const s3 = getS3Client();
     const uploadUrl = await getSignedUrl(s3, command, { expiresIn: PRESIGN_EXPIRES });
     const publicUrl = `https://${BUCKET}.s3.${REGION}.amazonaws.com/${key}`;
 
@@ -113,8 +112,11 @@ export async function POST(req: NextRequest) {
     });
   } catch (error: any) {
     console.error('Upload presign error:', error);
+    const hasAccessKey = !!process.env.AWS_ACCESS_KEY_ID;
+    const hasSecretKey = !!process.env.AWS_SECRET_ACCESS_KEY;
+    console.error(`AWS env check: ACCESS_KEY=${hasAccessKey}, SECRET_KEY=${hasSecretKey}, REGION=${REGION}, BUCKET=${BUCKET}`);
     return NextResponse.json(
-      { error: { code: 'INTERNAL_ERROR', message: error.message || 'Failed to generate presigned URL' } },
+      { error: { code: 'UPLOAD_ERROR', message: error.message || 'Failed to generate presigned URL', debug: { hasAccessKey, hasSecretKey, region: REGION, bucket: BUCKET } } },
       { status: 500 },
     );
   }
