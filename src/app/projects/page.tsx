@@ -61,7 +61,7 @@ function ProjectsContent() {
         (p) => p.name.toLowerCase().includes(q) || p.tagline.toLowerCase().includes(q)
       );
     }
-    if (category !== 'all') results = results.filter((p) => p.category === category);
+    if (category !== 'all') results = results.filter((p) => p.category.toLowerCase() === category.toLowerCase());
 
     if (sort === 'ending-soon') {
       results.sort((a, b) => new Date(a.fundingDeadline).getTime() - new Date(b.fundingDeadline).getTime());
